@@ -24,7 +24,6 @@ jobs:
           python -m compileall -q scripts tests
 
   formula:
-    if: ${{ hashFiles('Formula/ops-agent.rb') != '' }}
     runs-on: macos-15
     steps:
       - uses: actions/checkout@v5
