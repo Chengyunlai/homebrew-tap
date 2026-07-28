@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generator:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+      - name: Check generator
+        run: |
+          python -m unittest discover -s tests -v
+          python -m compileall -q scripts tests
+
+  formula:
+    if: ${{ hashFiles('Formula/ops-agent.rb') != '' }}
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v5
+      - name: Install Formula
+        run: brew install --formula ./Formula/ops-agent.rb
+      - name: Test installed commands
+        shell: bash
+        run: |
+          brew test ops-agent
+          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/ops-agent.rb)"
+          test "$(ops-agent --version)" = "ops-agent ${version}"
+          test "$(ops_agent --version)" = "ops-agent ${version}"
