@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  actions: write
   contents: write
 
 concurrency:
@@ -25,11 +26,13 @@ jobs:
       - name: Generate Formula
         run: python scripts/update_formula.py
       - name: Commit update
+        id: commit
         shell: bash
         run: |
           git add Formula/ops-agent.rb
           if git diff --cached --quiet; then
             echo "Formula already matches the latest release."
+            echo "changed=false" >>"${GITHUB_OUTPUT}"
             exit 0
           fi
           git config user.name yun
@@ -38,3 +41,9 @@ jobs:
           version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/ops-agent.rb)"
           git commit -m "chore: update ops-agent to ${version}"
           git push
+          echo "changed=true" >>"${GITHUB_OUTPUT}"
+      - name: Validate updated Formula
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref main
