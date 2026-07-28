@@ -28,11 +28,13 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Install Formula
-        run: brew install --formula ./Formula/ops-agent.rb
+        run: |
+          brew tap Chengyunlai/tap "${GITHUB_WORKSPACE}"
+          brew install Chengyunlai/tap/ops-agent
       - name: Test installed commands
         shell: bash
         run: |
-          brew test ops-agent
+          brew test Chengyunlai/tap/ops-agent
           version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/ops-agent.rb)"
           test "$(ops-agent --version)" = "ops-agent ${version}"
           test "$(ops_agent --version)" = "ops-agent ${version}"
