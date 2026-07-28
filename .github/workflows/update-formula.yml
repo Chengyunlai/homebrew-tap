@@ -1,0 +1,40 @@
+name: Update Formula
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-formula
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test generator
+        run: python -m unittest discover -s tests -v
+      - name: Generate Formula
+        run: python scripts/update_formula.py
+      - name: Commit update
+        shell: bash
+        run: |
+          git add Formula/ops-agent.rb
+          if git diff --cached --quiet; then
+            echo "Formula already matches the latest release."
+            exit 0
+          fi
+          git config user.name yun
+          git config user.email \
+            "58059527+Chengyunlai@users.noreply.github.com"
+          version="$(sed -n 's/^  version "\(.*\)"/\1/p' Formula/ops-agent.rb)"
+          git commit -m "chore: update ops-agent to ${version}"
+          git push
