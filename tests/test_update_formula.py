@@ -57,6 +57,7 @@ class UpdateFormulaTest(unittest.TestCase):
             formula,
         )
         self.assertIn('rm libexec/"_internal.tar.gz"', formula)
+        self.assertIn('system libexec/"ops-agent", "--version"', formula)
 
     def test_missing_archive_is_rejected(self) -> None:
         self.checksums.pop("ops-agent_1.2.3_linux-amd64.tar.gz")

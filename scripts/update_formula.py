@@ -110,6 +110,7 @@ def render_formula(release: Release, checksums: dict[str, str]) -> str:
 
     system "tar", "-xzf", libexec/"_internal.tar.gz", "-C", libexec
     rm libexec/"_internal.tar.gz"
+    system libexec/"ops-agent", "--version"
   end
 
   test do
