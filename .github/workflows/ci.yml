@@ -33,6 +33,8 @@ jobs:
     steps:
       - name: Set up Homebrew
         uses: Homebrew/actions/setup-homebrew@df4b09108a1de9d6f995fe68f302b3f68bd6d2ef # 2026.07.20.1
+        with:
+          stable: true
       - name: Install Formula
         run: brew install Chengyunlai/tap/ops-agent
       - name: Test installed commands
