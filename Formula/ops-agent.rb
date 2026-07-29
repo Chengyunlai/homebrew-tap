@@ -21,10 +21,18 @@ class OpsAgent < Formula
   end
 
   def install
-    libexec.install "ops-agent", "_internal"
+    libexec.install "ops-agent"
+    system "tar", "-czf", libexec/"_internal.tar.gz", "_internal"
     bin.install_symlink libexec/"ops-agent"
     bin.install_symlink libexec/"ops-agent" => "ops_agent"
     pkgshare.install "config.example.toml"
+  end
+
+  def post_install
+    return if (libexec/"_internal").directory?
+
+    system "tar", "-xzf", libexec/"_internal.tar.gz", "-C", libexec
+    rm libexec/"_internal.tar.gz"
   end
 
   test do
