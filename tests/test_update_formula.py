@@ -40,7 +40,12 @@ class UpdateFormulaTest(unittest.TestCase):
         self.assertIn("on_linux do", formula)
         self.assertIn("depends_on arch: :x86_64", formula)
         self.assertEqual(formula.count("releases/download/v1.2.3"), 3)
-        self.assertIn('bin.install "ops-agent", "ops_agent"', formula)
+        self.assertIn('libexec.install "ops-agent", "_internal"', formula)
+        self.assertIn('bin.install_symlink libexec/"ops-agent"', formula)
+        self.assertIn(
+            'bin.install_symlink libexec/"ops-agent" => "ops_agent"',
+            formula,
+        )
         self.assertIn('pkgshare.install "config.example.toml"', formula)
 
     def test_missing_archive_is_rejected(self) -> None:

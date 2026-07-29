@@ -98,7 +98,9 @@ def render_formula(release: Release, checksums: dict[str, str]) -> str:
   end
 
   def install
-    bin.install "ops-agent", "ops_agent"
+    libexec.install "ops-agent", "_internal"
+    bin.install_symlink libexec/"ops-agent"
+    bin.install_symlink libexec/"ops-agent" => "ops_agent"
     pkgshare.install "config.example.toml"
   end
 
