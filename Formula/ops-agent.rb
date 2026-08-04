@@ -1,22 +1,22 @@
 class OpsAgent < Formula
   desc "Kubernetes operations agent terminal"
   homepage "https://github.com/Chengyunlai/ops-agent"
-  version "0.1.10"
+  version "0.1.11"
   license "Apache-2.0"
 
   on_macos do
     if Hardware::CPU.arm?
-      url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.10/ops-agent_0.1.10_darwin-arm64.tar.gz"
-      sha256 "a846bd239d9e8d6a7c178331822f139d2551bb084d1f16df82fca3eabeb22ce5"
+      url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.11/ops-agent_0.1.11_darwin-arm64.tar.gz"
+      sha256 "4360f7b5b8ba787dec953ca917e824f74d419c60569db3bb5dcaa974a190b2ac"
     else
-      url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.10/ops-agent_0.1.10_darwin-amd64.tar.gz"
-      sha256 "8f74567046a234b3d1ec7947d24bf36a9213509ef31656dd801eb1ead79378e2"
+      url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.11/ops-agent_0.1.11_darwin-amd64.tar.gz"
+      sha256 "85b40584c55eb8e5bf3a3a80db8df4206c374d4ba83f0c766ef320a720217afd"
     end
   end
 
   on_linux do
-    url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.10/ops-agent_0.1.10_linux-amd64.tar.gz"
-    sha256 "080eac3db5155b84138a78a2fd0128f237897fc8343052600df0389af055662d"
+    url "https://github.com/Chengyunlai/ops-agent/releases/download/v0.1.11/ops-agent_0.1.11_linux-amd64.tar.gz"
+    sha256 "d9dd124cce7c17eb627247ab43326df38f0cc0d6a196219ab8a76c9fd91c1516"
     depends_on arch: :x86_64
   end
 
